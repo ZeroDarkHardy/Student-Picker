@@ -1,20 +1,93 @@
 import tkinter as tk
-from tkinter import messagebox
-import pandas as pd
+import os
+import csv
 import random
+from tkinter import messagebox
+import sys
+
+# Get the directory of the current executable or script
+if getattr(sys, 'frozen', False):  # If running as a PyInstaller bundle
+    base_dir = sys._MEIPASS
+else:
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+
+
+# Construct the full path to the CSV file
+file_path = os.path.join(base_dir, "students.csv")
 
 # Load student data from CSV
-file_path = "students.csv"
-student_data = pd.read_csv(file_path, header=None, names=["last_name", "first_name"])
+student_data = []
+with open(file_path, newline='', encoding='utf-8') as csvfile:
+    reader = csv.reader(csvfile)
+    for row in reader:
+        student_data.append({"last_name": row[0], "first_name": row[1]})
+
 remaining_students = student_data.copy()
-answered_students = []  # List to keep track of answered students
+answered_students = []
+answered_with_messages = []  # To store student + message pairs
+
+# Coding-themed uplifting messages list
+uplifting_messages = [
+    "debugged that question flawlessly!",
+    "wrote a perfect algorithm!",
+    "handled the logic like a pro!",
+    "compiled the perfect answer!",
+    "was on point with that solution!",
+    "crushed that code challenge!",
+    "refactored the question brilliantly!",
+    "delivered a bug-free answer!",
+    "optimized the solution like a genius!",
+    "nailed the syntax and logic!",
+    "showed true programming skills!",
+    "thought like a seasoned developer!",
+    "handled the edge cases like a champ!",
+    "built an elegant solution!",
+    "debugged that issue effortlessly!",
+    "demonstrated clean coding mastery!",
+    "architected a fantastic response!",
+    "pushed the perfect commit!",
+    "delivered clean, efficient code!",
+    "took that logic to the next level!",
+    "stepped into the code and conquered!",
+    "showed off brilliant problem-solving!",
+    "made the codebase proud!",
+    "executed the solution with precision!",
+    "broke down the problem beautifully!",
+    "refactored the question into brilliance!",
+    "crushed that merge conflict!",
+    "delivered an MVP answer!",
+    "showed mastery of algorithms!",
+    "outperformed expectations in logic!",
+    "rocked that pseudocode explanation!",
+    "gave a solution that scales perfectly!",
+    "mastered the problem like a pro!",
+    "proved they’re a full-stack superstar!",
+    "debugged and deployed a great answer!",
+    "wrote a solution that’s production-ready!",
+    "made the logic look effortless!",
+    "wowed everyone with their efficiency!",
+    "closed the question like a pull request!",
+    "simplified the complex like an expert!",
+    "delivered a 10x developer response!",
+    "proved they can handle any bug!",
+    "showed agile thinking at its best!",
+    "brought modular thinking to the table!",
+    "built a framework for success!",
+    "coded their way to the perfect solution!",
+    "iterated on the answer flawlessly!",
+    "left everyone in awe of their logic!",
+    "proved they’re a debugging wizard!",
+    "handled the recursion like a pro!",
+    "delivered a thread-safe solution!",
+    "conquered the question with precision!"
+]
 
 # Function to select a random student
 def select_student():
-    if not remaining_students.empty:
-        selected = remaining_students.sample().iloc[0]
+    if remaining_students:  # Check if the list is not empty
+        selected = random.choice(remaining_students)  # Select a random student
         student_name.set(f"{selected['first_name']} {selected['last_name']}")
-        current_student.set(selected.name)  # Store the index for tracking
+        current_student.set(selected)  # Store the selected student
         select_button.config(state=tk.DISABLED)  # Disable select button
     else:
         # Restart the queue when all students have answered
@@ -22,12 +95,15 @@ def select_student():
 
 # Function to mark the student as answered
 def mark_answered():
-    index = current_student.get()
-    if index is not None and not pd.isna(index):
-        global remaining_students
-        selected = remaining_students.loc[index]
-        answered_students.append(f"{selected['first_name']} {selected['last_name']}")
-        remaining_students = remaining_students.drop(index)
+    selected = current_student.get()
+    if selected:  # Ensure a student is selected
+        for student in remaining_students:
+            if student == eval(selected):  # Compare dictionaries directly
+                remaining_students.remove(student)  # Remove from the queue
+                # Assign a random message to the student and store it
+                message = random.choice(uplifting_messages)
+                answered_with_messages.append({"student": student, "message": message})
+                break
         student_name.set("")
         update_answered_list()  # Update the display of answered students
         update_queue_counter()  # Update the queue counter
@@ -35,14 +111,17 @@ def mark_answered():
 
 # Function to put the student back in the queue
 def requeue():
-    student_name.set("")
-    select_button.config(state=tk.NORMAL)  # Enable select button
+    selected = current_student.get()
+    if selected:  # Ensure a student is selected
+        student_name.set("")
+        select_button.config(state=tk.NORMAL)  # Enable select button
 
 # Function to restart the queue
 def restart_queue():
-    global remaining_students, answered_students
+    global remaining_students, answered_students, answered_with_messages
     remaining_students = student_data.copy()
     answered_students = []
+    answered_with_messages = []
     update_answered_list()
     update_queue_counter()  # Update the queue counter
     messagebox.showinfo("Queue Restarted", "All students have answered. The queue has been restarted.")
@@ -50,8 +129,12 @@ def restart_queue():
 # Function to update the answered students list
 def update_answered_list():
     answered_list.delete(0, tk.END)  # Clear the listbox
-    for student in answered_students:
-        answered_list.insert(tk.END, student)
+    for entry in answered_with_messages:
+        student = entry["student"]
+        message = entry["message"]
+        answered_list.insert(tk.END, f"{student['first_name']} {student['last_name']} {message}")
+    # Auto-scroll to the bottom
+    answered_list.yview_moveto(1)
 
 # Function to update the queue counter
 def update_queue_counter():
@@ -64,13 +147,22 @@ def quit_app():
 # Initialize the Tkinter app
 app = tk.Tk()
 app.title("Student Picker")
-app.geometry("600x600")  # Default window size set taller
+
+# Center the window on the screen
+app_width = 600
+app_height = 600
+screen_width = app.winfo_screenwidth()
+screen_height = app.winfo_screenheight()
+x_coordinate = (screen_width // 2) - (app_width // 2)
+y_coordinate = (screen_height // 2) - (app_height // 2)
+app.geometry(f"{app_width}x{app_height}+{x_coordinate}+{y_coordinate}")
+
 app.configure(bg="#282c34")
 app.overrideredirect(True)  # Remove the title bar
 
 # Tkinter Variables
 student_name = tk.StringVar()
-current_student = tk.IntVar(value=None)
+current_student = tk.StringVar(value=None)
 queue_counter = tk.StringVar(value=f"Students Remaining: {len(remaining_students)}")
 
 # Custom title bar
