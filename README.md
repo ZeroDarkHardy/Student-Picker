@@ -34,7 +34,7 @@ An interactive, dynamic tool for instructors to randomly select students from a 
 - Pre-built executables are available for both PC and macOS.
 
 ### Pre-Built Executables
-- Download the appropriate executable for your system from the repository's [Releases](#).
+- Download the appropriate executable for your system from the repository's [Releases](https://github.com/ZeroDarkHardy/Student-Picker/releases).
 
 ---
 
@@ -46,7 +46,7 @@ An interactive, dynamic tool for instructors to randomly select students from a 
 3. Double-click the executable to run the program.
 
 ### For macOS
-1. Download the `.app` file from the [Releases](#).
+1. Download the `.app` file from the [Releases](https://github.com/ZeroDarkHardy/Student-Picker/releases).
 2. Drag and drop the app into your `Applications` folder.
 3. On the first run, you may encounter a security warning stating the app cannot be opened because it is from an unidentified developer.
 4. To unblock the app:
