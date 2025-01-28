@@ -12,6 +12,7 @@ An interactive, dynamic tool for instructors to randomly select students from a 
 - [Usage Instructions](#usage-instructions)
   - [For PC](#for-pc)
   - [For macOS](#for-macos)
+  - [Running the Python File](#running-the-python-file)
 - [CSV File Format](#csv-file-format)
 
 ---
@@ -56,6 +57,20 @@ An interactive, dynamic tool for instructors to randomly select students from a 
    - Confirm by clicking **Open** in the pop-up window.
 5. After unblocking, double-click the app to run. No additional files are needed.
 
+### Running the Python File
+1. Ensure Python 3.8 or higher is installed on your system.
+2. Install the required dependencies by running:
+   ```bash
+   pip install tkinter
+   ```
+   (Note: `tkinter` is pre-installed with most Python distributions, but ensure it's available.)
+3. Place the `students.csv` file in the same directory as `student_picker.py`.
+4. Run the script by executing:
+   ```bash
+   python student_picker.py
+   ```
+5. The application will launch and function as described.
+
 ---
 
 ## CSV File Format
@@ -69,5 +84,5 @@ Johnson,Alex
 Brown,Samantha
 ```
 
-Ensure the file is saved in UTF-8 encoding and placed alongside the executable (for PC).
+Ensure the file is saved in UTF-8 encoding and placed alongside the executable (for PC) or the script (if running directly).
 
