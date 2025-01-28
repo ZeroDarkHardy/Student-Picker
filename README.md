@@ -41,7 +41,7 @@ An interactive, dynamic tool for instructors to randomly select students from a 
 ## Usage Instructions
 
 ### For PC
-1. Download the executable from the [Releases](#).
+1. Download the executable from the [Releases](https://github.com/ZeroDarkHardy/Student-Picker/releases).
 2. Place the `students.csv` file in the same directory as the executable.
 3. Double-click the executable to run the program.
 
