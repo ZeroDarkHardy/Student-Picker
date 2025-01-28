@@ -1,19 +1,17 @@
 import tkinter as tk
-import os
 import csv
 import random
 from tkinter import messagebox
 import sys
+import os
 
-# Get the directory of the current executable or script
-if getattr(sys, 'frozen', False):  # If running as a PyInstaller bundle
-    base_dir = sys._MEIPASS
-else:
-    base_dir = os.path.dirname(os.path.abspath(__file__))
+if getattr(sys, 'frozen', False):  # Running as a PyInstaller bundle
+    base_dir = os.path.join(sys._MEIPASS)  # Points to the temporary directory where PyInstaller extracts files
+else:  # Running in a regular Python environment
+    base_dir = os.path.dirname(os.path.abspath(__file__))  # Points to the directory of the script
 
+file_path = os.path.join(base_dir, "students.csv")  # Constructs the path to students.csv
 
-# Construct the full path to the CSV file
-file_path = os.path.join(base_dir, "students.csv")
 
 # Load student data from CSV
 student_data = []
