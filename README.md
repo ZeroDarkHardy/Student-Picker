@@ -17,7 +17,7 @@ An interactive, dynamic tool for instructors to randomly select students from a 
 
 ---
 
-![Student Picker in Action](https://github.com/ZeroDarkHardy/Student-Picker/images/pc_app.png)
+![Student Picker in Action](https://github.com/ZeroDarkHardy/Student-Picker/blob/main/images/pc_app.png)
 
 ---
 
