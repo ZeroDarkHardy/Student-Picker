@@ -18,7 +18,6 @@ An interactive, dynamic tool for instructors to randomly select students from a 
 ---
 
 ![Student Picker in Action](https://github.com/ZeroDarkHardy/Student-Picker/blob/main/images/pc_app.png)
-
 ---
 
 ## Features
@@ -82,10 +81,10 @@ An interactive, dynamic tool for instructors to randomly select students from a 
 The `students.csv` file must contain a list of student names in the following format (no header row):
 
 ```
-Doe,John
-Smith,Jane
-Johnson,Alex
-Brown,Samantha
+Doe       John
+Smith     Jane
+Johnson   Alex
+Brown     Samantha
 ```
 
 Ensure the file is saved in UTF-8 encoding and placed alongside the executable (for PC) or the script (if running directly).
